@@ -1,65 +1,65 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request
-import json
 
 class GenteFitSyncController(http.Controller):
 
     def _auth(self):
-        """Autentica usando API KEY en header: X-Api-Key"""
+        """Autentica mediante API KEY en header: X-Api-Key"""
         api_key = request.httprequest.headers.get("X-Api-Key")
 
         if not api_key:
             return None
 
-        user = request.env["res.users"].sudo().search([("api_key", "=", api_key)], limit=1)
+        user = request.env["res.users"].sudo().search([
+            ("api_key", "=", api_key)
+        ], limit=1)
 
         if not user:
             return None
 
-        # activar entorno con permisos de ese usuario
-        request.update_env(user=user)
-
+        # Hacer que el entorno use este usuario
+        request.env = request.env(user=user)
         return user
 
-
-    @http.route("/gentefit/users", type="json", auth="none", methods=["GET"])
-    def get_users(self):
+    # ----------------------------------------------------------
+    # GET USERS
+    # ----------------------------------------------------------
+    @http.route("/gentefit/users", type="http", auth="public", methods=["GET"], csrf=False)
+    def get_users(self, **kwargs):
         user = self._auth()
         if not user:
-            return {"error": "Invalid API KEY"}
+            return request.make_json_response({"error": "Invalid API KEY"}, status=401)
 
         users = request.env["res.users"].sudo().search([])
 
-        data = []
-        for u in users:
-            data.append({
-                "id": u.id,
-                "name": u.name,
-                "email": u.login,
-                "active": u.active,
-            })
+        data = [{
+            "id": u.id,
+            "name": u.name,
+            "email": u.login,
+            "active": u.active,
+        } for u in users]
 
-        return {"users": data}
+        return request.make_json_response({"users": data}, status=200)
 
-
-    @http.route("/gentefit/partners", type="json", auth="none", methods=["GET"])
-    def get_partners(self):
+    # ----------------------------------------------------------
+    # GET PARTNERS
+    # ----------------------------------------------------------
+    @http.route("/gentefit/partners", type="http", auth="public", methods=["GET"], csrf=False)
+    def get_partners(self, **kwargs):
         user = self._auth()
         if not user:
-            return {"error": "Invalid API KEY"}
+            return request.make_json_response({"error": "Invalid API KEY"}, status=401)
 
         partners = request.env["res.partner"].sudo().search([])
 
-        data = []
-        for p in partners:
-            data.append({
-                "id": p.id,
-                "name": p.name,
-                "email": p.email,
-                "phone": p.phone,
-                "customer_rank": p.customer_rank,
-                "is_company": p.is_company,
-            })
+        data = [{
+            "id": p.id,
+            "name": p.name,
+            "email": p.email,
+            "phone": p.phone,
+            "customer_rank": p.customer_rank,
+            "is_company": p.is_company,
+        } for p in partners]
 
-        return {"partners": data}
+        return request.make_json_response({"partners": data}, status=200)
