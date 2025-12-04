@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "FitData Sync",
+    "name": "GenteFit Sync API",
     "version": "1.0",
-    "summary": "Endpoint para exportar datos a FitData (.NET)",
-    "author": "FitData Project",
+    "summary": "API para sincronizar usuarios y partners con FitData (.NET)",
+    "author": "FitData",
     "category": "Tools",
     "license": "LGPL-3",
     "depends": ["base"],
-    "data": [
-        "security/ir.model.access.csv"
-    ],
     "installable": True,
     "application": False,
 }
