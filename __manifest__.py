@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Odoo Python Sync API",
+    "name": "GenteFit Sync API",
     "version": "1.0",
-    "summary": "API REST para sincronizar usuarios y clientes con FitData (.NET)",
+    "summary": "API para sincronizar con FitData (.NET)",
     "author": "FitData",
     "category": "Tools",
     "license": "LGPL-3",
     "depends": ["base"],
     "data": [
-        "security/ir.model.access.csv"
+        "security/ir.model.access.csv",
+        "views/res_users_views.xml",   # 👈 IMPORTANTE
     ],
-    "init_xml": [],
     "installable": True,
     "application": False,
 }

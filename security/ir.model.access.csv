@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_fitdata_user,access_fitdata_user,base.model_res_users,,1,0,0,0
-access_fitdata_partner,access_fitdata_partner,base.model_res_partner,,1,0,0,0
+access_res_users_api,access_res_users_api,base.model_res_users,,1,1,1,0
